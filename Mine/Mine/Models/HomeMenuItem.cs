@@ -6,10 +6,9 @@ namespace Mine.Models
 {
     public enum MenuItemType
     {
-        Items,
+        Browse,
         About
     }
-
     public class HomeMenuItem
     {
         public MenuItemType Id { get; set; }
