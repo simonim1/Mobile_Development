@@ -8,11 +8,12 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Mine.Views
+
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Page1 : ContentPage
+    public partial class GamePage : ContentPage
     {
-        public Page1()
+        public GamePage()
         {
             InitializeComponent();
         }
