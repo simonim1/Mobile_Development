@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Game\GamePage.xaml.cs">
+      <DependentUpon>GamePage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Items\ItemDeletePage.xaml.cs">
       <DependentUpon>ItemDeletePage.xaml</DependentUpon>
     </Compile>
@@ -31,5 +34,11 @@
     <Compile Update="Views\Items\ItemIndexPage.xaml.cs">
       <DependentUpon>ItemIndexPage.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\Game\GamePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
