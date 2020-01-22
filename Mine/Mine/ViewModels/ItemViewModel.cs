@@ -18,7 +18,10 @@ namespace Mine.ViewModels
         public ItemViewModel(ItemModel data = null)
         {
             Title = data?.Name;
+ 
+       
             Data = data;
+           
         }
     }
 }
