@@ -30,12 +30,12 @@ namespace Mine.Services
         {
             datalist = new List<ItemModel>()
             {
-                new ItemModel { Name = "First item", Description="This is an item description." },
-                new ItemModel { Name = "Second item", Description="This is an item description." },
-                new ItemModel { Name = "Third item", Description="This is an item description." },
-                new ItemModel { Name = "Fourth item", Description="This is an item description." },
-                new ItemModel { Name = "Fifth item", Description="This is an item description." },
-                new ItemModel { Name = "Sixth item", Description="This is an item description." }
+                new ItemModel { Name = "Paint Brush", Description="Gives the enemies the ol razzel dazzel" , Value=5},
+                new ItemModel { Name = "Throwing stars", Description="Allows you to attack an enemy from afar" , Value= 3},
+                new ItemModel { Name = "Fighting Gloves", Description="Old school fighting with FISTS", Value=1 },
+                new ItemModel { Name = "Golden Gun", Description="One shot and instant kill", Value= 10 },
+                new ItemModel { Name = "Kazoo", Description="destroy enemies ear drums", Value=7 }
+              
             };
 
             return true;
