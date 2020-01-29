@@ -53,6 +53,11 @@ namespace Mine.ViewModels
                 await Delete(data as ItemModel);
             });
 
+            MessagingCenter.Subscribe<ItemUpdatePage, ItemModel>(this, "Update", async (obj, data) =>
+             {
+                 await Update(data as ItemModel);
+ 
+             });
           
         }
 
@@ -98,7 +103,27 @@ namespace Mine.ViewModels
             return result;
         }
 
-        
+        /// <summary>
+        /// API to add the Data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<bool> Update(ItemModel data)
+        {
+            var record = await Read(data.Id);
+            if (record == null)
+            {
+                return false;
+            }
+            record.Update(data);
+
+            var result = await DataStore.UpdateAsync(record);
+
+            await ExecuteLoadDataCommand();
+
+            return result;
+        }
+
         #region Refresh
         // Return True if a refresh is needed
         // It sets the refresh flag to false
