@@ -46,6 +46,12 @@ namespace Mine.ViewModels
             {
                 await Add(data as ItemModel);
             });
+
+            //Register the Delete Message
+            MessagingCenter.Subscribe<ItemDeletePage, ItemModel>(this, "Delete", async (obj, data) =>
+            {
+                await Delete(data as ItemModel);
+            });
         }
 
         /// <summary>
