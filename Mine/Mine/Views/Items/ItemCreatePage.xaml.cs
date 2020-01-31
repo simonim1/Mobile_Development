@@ -30,6 +30,13 @@ namespace Mine.Views
             BindingContext = this.ViewModel = data;
         }
 
+        //overide the back button
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
+        }
+
+
         /// <summary>
         /// Save by calling for Create
         /// </summary>
