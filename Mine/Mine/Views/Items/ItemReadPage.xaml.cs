@@ -32,6 +32,8 @@ namespace Mine.Views
             BindingContext = this.ViewModel = data;
         }
 
+  
+
         /// <summary>
         /// Save calls to Update
         /// </summary>
@@ -39,7 +41,7 @@ namespace Mine.Views
         /// <param name="e"></param>
         async void Update_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ItemUpdatePage(new ItemViewModel(ViewModel.Data)));
+            await Navigation.PushAsync(new NavigationPage(new ItemUpdatePage(new ItemViewModel(ViewModel.Data))));
         }
 
         /// <summary>
@@ -49,7 +51,9 @@ namespace Mine.Views
         /// <param name="e"></param>
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ItemDeletePage(new ItemViewModel(ViewModel.Data)));
+        
+            await Navigation.PushModalAsync(new NavigationPage( new ItemDeletePage(new ItemViewModel(ViewModel.Data))));
+           await Navigation.PopAsync();
         }
     }
 }

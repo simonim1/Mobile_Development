@@ -21,6 +21,7 @@
         <StackLayout
             HorizontalOptions="Center"
             Padding="20">
+            
             <Label Text="Really delete This?" FontSize="Medium"></Label>
             <Button
                 Text="Yes"

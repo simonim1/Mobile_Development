@@ -19,11 +19,17 @@ namespace Mine.Views
         ItemViewModel viewModel;
 
         // Constructor for Delete takes a view model of what to delete
-        public ItemDeletePage(ItemViewModel data)
+        public ItemDeletePage  (ItemViewModel data)
         {
             InitializeComponent();
 
             BindingContext = this.viewModel = data;
+        }
+
+        //function to ignore backbutton 
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
 
         /// <summary>
@@ -34,10 +40,8 @@ namespace Mine.Views
         async void Delete_Clicked(object sender, EventArgs e)
         {
             MessagingCenter.Send(this, "Delete", viewModel.Data);
-
-            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-
-            await Navigation.PopAsync();
+        
+            await Navigation.PopModalAsync();
         }
 
         /// <summary>
@@ -47,9 +51,7 @@ namespace Mine.Views
         /// <param name="e"></param>
         async void Cancel_Clicked(object sender, EventArgs e)
         {
-            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-
-            await Navigation.PopAsync();
+            await Navigation.PopModalAsync(false);
         }
     }
 }
