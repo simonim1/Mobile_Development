@@ -20,6 +20,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -39,8 +41,26 @@
                 <Label Text="CPSC 4025 WQ20"></Label>
                 <Label Text="Michelle Simoni"></Label>
                 <Label Text="1/16/2020 - 6:57pm"></Label>
+
+                <StackLayout Orientation="Horizontal"
+                             VerticalOptions="Center"
+                                    Padding="50,0,0,0">
+
+                    <Label HorizontalOptions="Start" 
+                           VerticalOptions="Center"
+                        Text="SQL Data Source" />
+
+                    <Switch
+                        HorizontalOptions="Start" 
+                        VerticalOptions="Center"
+                        x:Name="DataSourceValue"
+                        Toggled="DataSource_Toggled" 
+                        />
+
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </Grid>
+    
     
 </ContentPage>

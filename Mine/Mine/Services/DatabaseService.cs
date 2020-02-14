@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Mine.Models;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Mine.Services
 {
-    class DatabaseService
+    class DatabaseService : IDataStore<ItemModel>
     {
 
         static readonly Lazy<SQLiteAsyncConnection> lazyInitializer = new Lazy<SQLiteAsyncConnection>(() =>
@@ -36,9 +37,9 @@ namespace Mine.Services
             }
         }
 
-        public Task<List<ItemModel>> IndexAsync()
+        public async Task<List<ItemModel>> IndexAsync(bool forceRefresh = false)
         {
-            return Database.Table<ItemModel>().ToListAsync();
+            return await Database.Table<ItemModel>().ToListAsync();
         }
 
         public Task<bool> CreateAsync(ItemModel item)
@@ -75,6 +76,8 @@ namespace Mine.Services
             var result = await Database.DeleteAsync(item);
             return (result == 1);
         }
+
+        
       
     }
 }

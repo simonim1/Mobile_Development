@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using System.Linq;
 
+
+
 namespace Mine.ViewModels
 {
     /// <summary>
@@ -16,6 +18,9 @@ namespace Mine.ViewModels
     /// </summary>
     public class ItemIndexViewModel : BaseViewModel
     {
+    
+
+        #region Singleton
         private static volatile ItemIndexViewModel instance;
         private static readonly object syncRoot = new object();
 
@@ -36,18 +41,30 @@ namespace Mine.ViewModels
                 return instance;
             }
         }
+
+        #endregion Singleton
         // The Data set of records
         public ObservableCollection<ItemModel> Dataset { get; set; }
 
+        #region DataService
         /// <summary>
         /// Connection to the Data store
         /// </summary>
-        public IDataStore<ItemModel> DataStore => DependencyService.Get<IDataStore<ItemModel>>();
+        public IDataStore<ItemModel> DataSource_Mock => new MockDataStore();
+        public IDataStore<ItemModel> DataSource_SQL => new DatabaseService();
 
+        public IDataStore<ItemModel> DataStore;
+        #endregion DataService
+
+        public int CurrentDataSource = 0;
         // Command to force a Load of data
         public Command LoadDatasetCommand { get; set; }
 
         private bool _needsRefresh;
+
+
+
+
 
         /// <summary>
         /// Constructor
@@ -56,6 +73,7 @@ namespace Mine.ViewModels
         /// </summary>
         public ItemIndexViewModel()
         {
+            SetDataSource(CurrentDataSource);
             Title = "Items";
 
             Dataset = new ObservableCollection<ItemModel>();
@@ -78,7 +96,38 @@ namespace Mine.ViewModels
                  await Update(data as ItemModel);
  
              });
-          
+
+            MessagingCenter.Subscribe<AboutPage, int>(this, "SetDataSource", (obj, data) =>
+            {
+                SetDataSource(data);
+            });
+
+        }
+
+        /// <summary>
+        /// Sets the DataSource to use (SQL or Mock)
+        /// </summary>
+        /// <param name="isSQL"></param>
+        /// <returns></returns>
+         public bool SetDataSource(int isSQL)
+        {
+            if (isSQL == 1)
+            {
+                DataStore = DataSource_SQL;
+                CurrentDataSource = 1;
+            }
+            else
+            {
+                DataStore = DataSource_Mock;
+                CurrentDataSource = 0;
+            }
+
+
+
+            // Set Flag for Refresh
+            SetNeedsRefresh(true);
+
+            return true;
         }
 
         /// <summary>
