@@ -100,5 +100,14 @@ namespace Mine.Services
         {
             return await Task.FromResult(datalist);
         }
+
+        ///<summary>
+        ///function to wipe a data list
+        ///</summary>
+        public void WipeDataList()
+        {
+            datalist.Clear();
+            LoadDefaultData();
+        }
     }
 }
