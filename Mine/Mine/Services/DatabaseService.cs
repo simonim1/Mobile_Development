@@ -37,23 +37,44 @@ namespace Mine.Services
             }
         }
 
+        /// <summary>
+        /// Is a list of all the items in the index list
+        /// </summary>
+        /// <param name="forceRefresh"></param>
+        /// <returns></returns>
         public async Task<List<ItemModel>> IndexAsync(bool forceRefresh = false)
         {
             return await Database.Table<ItemModel>().ToListAsync();
         }
 
+
+        /// <summary>
+        /// create function for the database
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public Task<bool> CreateAsync(ItemModel item)
         {
             Database.InsertAsync(item);
             return Task.FromResult(true);
         }
 
+        /// <summary>
+        /// Read function for actial database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Task<ItemModel> ReadAsync(string id)
         {
             return Database.Table<ItemModel>().Where(i => i.Id.Equals(id)).FirstOrDefaultAsync();
 
         }
 
+        /// <summary>
+        /// created update function for the database
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateAsync(ItemModel item)
         {
             var data = await ReadAsync(item.Id);
@@ -65,6 +86,12 @@ namespace Mine.Services
             return (result == 1);
         }
 
+
+        /// <summary>
+        /// delete function that would delete from the item model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public  async Task<bool> DeleteAsync(string id)
         {
             var item = await ReadAsync(id);
@@ -77,7 +104,11 @@ namespace Mine.Services
             return (result == 1);
         }
 
-        
+        public void WipeDataList()
+        {
+            Database.DropTableAsync<ItemModel>().GetAwaiter().GetResult();
+            Database.CreateTablesAsync(CreateFlags.None, typeof(ItemModel)).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
       
     }
 }
