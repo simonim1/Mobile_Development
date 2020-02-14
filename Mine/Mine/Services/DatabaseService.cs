@@ -41,9 +41,10 @@ namespace Mine.Services
             return Database.Table<ItemModel>().ToListAsync();
         }
 
-        public Task<int> CreateAsync(ItemModel item)
+        public Task<bool> CreateAsync(ItemModel item)
         {
-            return Database.InsertAsync(item);
+            Database.InsertAsync(item);
+            return Task.FromResult(true);
         }
 
         public Task<ItemModel> ReadAsync(string id)
@@ -52,14 +53,27 @@ namespace Mine.Services
 
         }
 
-        public Task<int> UpdateAsync(ItemModel item)
+        public async Task<bool> UpdateAsync(ItemModel item)
         {
-            return Database.UpdateAsync(item);
+            var data = await ReadAsync(item.Id);
+            if(data == null)
+            {
+                return false;
+            }
+            var result = await Database.UpdateAsync(item);
+            return (result == 1);
         }
 
-        public Task<int> DeleteAsync(ItemModel item)
+        public  async Task<bool> DeleteAsync(string id)
         {
-            return Database.DeleteAsync(item);
+            var item = await ReadAsync(id);
+            if(item == null)
+            {
+                return false;
+            }
+
+            var result = await Database.DeleteAsync(item);
+            return (result == 1);
         }
       
     }

@@ -8,6 +8,7 @@ namespace Mine.Models
     public class BaseModel
     {
         // ID
+        [PrimaryKey]
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         // Name 
