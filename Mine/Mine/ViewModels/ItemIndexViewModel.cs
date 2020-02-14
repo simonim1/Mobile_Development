@@ -104,6 +104,11 @@ namespace Mine.ViewModels
                 SetDataSource(data);
             });
 
+            MessagingCenter.Subscribe<AboutPage, bool>(this, "WipeDataList", (obj, data) =>
+              {
+                  WipeDataList();
+              });
+
         }
         #endregion Message Center
 
@@ -262,5 +267,16 @@ namespace Mine.ViewModels
             LoadDatasetCommand.Execute(null);
         }
         #endregion Refresh
+
+        ///<summary>
+        ///a function to display the wipe data list
+        ///</summary>
+        public void WipeDataList()
+        {
+            DataStore.WipeDataList();
+            SetNeedsRefresh(true);
+        }
     }
 }
+
+ 
