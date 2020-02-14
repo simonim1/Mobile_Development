@@ -65,7 +65,7 @@ namespace Mine.ViewModels
 
 
 
-
+        #region Message Center
         /// <summary>
         /// Constructor
         /// 
@@ -73,6 +73,7 @@ namespace Mine.ViewModels
         /// </summary>
         public ItemIndexViewModel()
         {
+            //set database to be moc
             SetDataSource(CurrentDataSource);
             Title = "Items";
 
@@ -97,19 +98,22 @@ namespace Mine.ViewModels
  
              });
 
+            //message to change the database from the about page
             MessagingCenter.Subscribe<AboutPage, int>(this, "SetDataSource", (obj, data) =>
             {
                 SetDataSource(data);
             });
 
         }
+        #endregion Message Center
+
 
         /// <summary>
         /// Sets the DataSource to use (SQL or Mock)
         /// </summary>
         /// <param name="isSQL"></param>
         /// <returns></returns>
-         public bool SetDataSource(int isSQL)
+        public bool SetDataSource(int isSQL)
         {
             if (isSQL == 1)
             {
@@ -121,8 +125,6 @@ namespace Mine.ViewModels
                 DataStore = DataSource_Mock;
                 CurrentDataSource = 0;
             }
-
-
 
             // Set Flag for Refresh
             SetNeedsRefresh(true);
