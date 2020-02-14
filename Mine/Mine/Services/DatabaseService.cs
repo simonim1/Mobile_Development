@@ -49,7 +49,7 @@ namespace Mine.Services
 
         public Task<int> UpdateAsync(ItemModel item)
         {
-            return Database.UpdateAllAsync(item);
+            return Database.UpdateAsync(item);
         }
       
     }
