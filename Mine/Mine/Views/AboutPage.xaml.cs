@@ -26,9 +26,9 @@ namespace Mine.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-          void DataSource_Toggled(object sender, EventArgs e)
+        void DataSource_Toggled(object sender, EventArgs e)
         {
-            //// Flip the settings
+            // Flip the settings
             if (DataSourceValue.IsToggled == true)
             {
                 MessagingCenter.Send(this, "SetDataSource", 1);
@@ -36,6 +36,16 @@ namespace Mine.Views
             else
             {
                 MessagingCenter.Send(this, "SetDataSource", 0);
+            }
+        }
+
+        async void WipeDataList_Clicked(object sender, EventArgs e)
+        {
+            bool answer = await DisplayAlert("Delete Data", "Are you sure you want to delete all data?", "Yes", "No");
+
+            if (answer)
+            {
+                MessagingCenter.Send(this, "WipeDataList", true);
             }
         }
     }

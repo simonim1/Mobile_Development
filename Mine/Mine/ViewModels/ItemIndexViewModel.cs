@@ -9,7 +9,6 @@ using Xamarin.Forms;
 using System.Linq;
 
 
-
 namespace Mine.ViewModels
 {
     /// <summary>
@@ -62,9 +61,6 @@ namespace Mine.ViewModels
 
         private bool _needsRefresh;
 
-
-
-
         #region Message Center
         /// <summary>
         /// Constructor
@@ -75,6 +71,7 @@ namespace Mine.ViewModels
         {
             //set database to be moc
             SetDataSource(CurrentDataSource);
+
             Title = "Items";
 
             Dataset = new ObservableCollection<ItemModel>();
@@ -93,10 +90,10 @@ namespace Mine.ViewModels
             });
 
             MessagingCenter.Subscribe<ItemUpdatePage, ItemModel>(this, "Update", async (obj, data) =>
-             {
-                 await Update(data as ItemModel);
- 
-             });
+            {
+                await Update(data as ItemModel);
+
+            });
 
             //message to change the database from the about page
             MessagingCenter.Subscribe<AboutPage, int>(this, "SetDataSource", (obj, data) =>
@@ -105,13 +102,23 @@ namespace Mine.ViewModels
             });
 
             MessagingCenter.Subscribe<AboutPage, bool>(this, "WipeDataList", (obj, data) =>
-              {
-                  WipeDataList();
-              });
+            {
+                WipeDataList();
+            });
 
         }
-        #endregion Message Center
+#endregion Message Center
 
+
+        ///<summary>
+        ///a function to display the wipe data list
+        ///</summary>
+        public void WipeDataList()
+        {
+            DataStore.WipeDataList();
+            SetNeedsRefresh(true);
+        }
+     
 
         /// <summary>
         /// Sets the DataSource to use (SQL or Mock)
@@ -138,6 +145,17 @@ namespace Mine.ViewModels
         }
 
         /// <summary>
+        /// API to Read the Data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<ItemModel> Read(string id)
+        {
+            var result = await DataStore.ReadAsync(id);
+            return result;
+        }
+
+        /// <summary>
         /// API to add the Data
         /// </summary>
         /// <param name="data"></param>
@@ -150,16 +168,7 @@ namespace Mine.ViewModels
             return true;
         }
 
-        /// <summary>
-        /// API to Read the Data
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public async Task<ItemModel> Read(string id)
-        {
-            var result = await DataStore.ReadAsync(id);
-            return result;
-        }
+
 
         /// <summary>
         /// API to add the Data
@@ -220,6 +229,45 @@ namespace Mine.ViewModels
             _needsRefresh = value;
         }
 
+
+        //// Command that Loads the Data
+        //private async Task ExecuteLoadDataCommand()
+        //{
+        //    if (IsBusy)
+        //    {
+        //        return;
+        //    }
+
+        //    IsBusy = true;
+
+        //    try
+        //    {
+        //        Dataset.Clear();
+        //        var dataset = await DataStore.IndexAsync(true);
+
+        //        // Example of how to sort the database output using a linq query.
+        //        // Sort the list
+        //        dataset = dataset
+        //            .OrderBy(a => a.Name)
+        //            .ThenBy(a => a.Description)
+        //            .ToList();
+
+        //        foreach (var data in dataset)
+        //        {
+        //            // Make a Copy of the Item Model to add to the List
+        //            Dataset.Add(new ItemModel(data));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex);
+        //    }
+        //    finally
+        //    {
+        //        IsBusy = false;
+        //    }
+        //}
+
         // Command that Loads the Data
         private async Task ExecuteLoadDataCommand()
         {
@@ -244,7 +292,7 @@ namespace Mine.ViewModels
 
                 foreach (var data in dataset)
                 {
-                    Dataset.Add(data);
+                    Dataset.Add(new ItemModel(data));
                 }
             }
             catch (Exception ex)
@@ -268,14 +316,7 @@ namespace Mine.ViewModels
         }
         #endregion Refresh
 
-        ///<summary>
-        ///a function to display the wipe data list
-        ///</summary>
-        public void WipeDataList()
-        {
-            DataStore.WipeDataList();
-            SetNeedsRefresh(true);
-        }
+
     }
 }
 

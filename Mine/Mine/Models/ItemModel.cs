@@ -11,12 +11,28 @@
         //the value of the item 
         public int Value { get; set; } = 0;
 
+        public ItemModel() { }
+
+        public ItemModel(ItemModel data)
+        {
+         
+            // Update the Base
+            Id = data.Id;
+            Name = data.Name;
+            Description = data.Description;
+
+            // Update the extended
+            Value = data.Value;
+        }
+
         public bool Update(ItemModel data)
         {
             //do NOT update the ID, if you do , the record will be orphaned
             //ID=data.ID;
 
             //update the BASE
+           
+
             Name = data.Name;
             Description = data.Description;
 

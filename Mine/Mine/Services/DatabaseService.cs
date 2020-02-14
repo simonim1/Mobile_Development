@@ -38,16 +38,15 @@ namespace Mine.Services
         }
 
         /// <summary>
-        /// Is a list of all the items in the index list
+        /// created a function that would wipe the wole data list
         /// </summary>
-        /// <param name="forceRefresh"></param>
-        /// <returns></returns>
-        public async Task<List<ItemModel>> IndexAsync(bool forceRefresh = false)
+        public void WipeDataList()
         {
-            return await Database.Table<ItemModel>().ToListAsync();
+            Database.DropTableAsync<ItemModel>().GetAwaiter().GetResult();
+            Database.CreateTablesAsync(CreateFlags.None, typeof(ItemModel)).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-
+        #region CRUDI
         /// <summary>
         /// create function for the database
         /// </summary>
@@ -70,45 +69,67 @@ namespace Mine.Services
 
         }
 
-        /// <summary>
-        /// created update function for the database
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public async Task<bool> UpdateAsync(ItemModel item)
-        {
-            var data = await ReadAsync(item.Id);
-            if(data == null)
-            {
-                return false;
-            }
-            var result = await Database.UpdateAsync(item);
-            return (result == 1);
-        }
-
 
         /// <summary>
-        /// delete function that would delete from the item model
+        /// Is an undate function to update the data 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="Data"></param>
         /// <returns></returns>
-        public  async Task<bool> DeleteAsync(string id)
+        public Task<bool> UpdateAsync(ItemModel Data)
         {
-            var item = await ReadAsync(id);
-            if(item == null)
+            var myRead = ReadAsync(Data.Id).GetAwaiter().GetResult();
+            if (myRead == null)
             {
-                return false;
+                return Task.FromResult(false);
+
             }
 
-            var result = await Database.DeleteAsync(item);
-            return (result == 1);
+            Database.UpdateAsync(Data);
+
+            return Task.FromResult(true);
         }
 
-        public void WipeDataList()
+        public Task<bool> DeleteAsync(string id)
         {
-            Database.DropTableAsync<ItemModel>().GetAwaiter().GetResult();
-            Database.CreateTablesAsync(CreateFlags.None, typeof(ItemModel)).ConfigureAwait(false).GetAwaiter().GetResult();
+            // Check if it exists...
+            var myRead = ReadAsync(id).GetAwaiter().GetResult();
+            if (myRead == null)
+            {
+                return Task.FromResult(false);
+
+            }
+
+            // Then delete...
+
+            Database.DeleteAsync(myRead);
+            return Task.FromResult(true);
         }
+
+        #endregion CRUDI
+
+        /// <summary>
+        /// Is a list of all the items in the index list
+        /// </summary>
+        /// <param name="forceRefresh"></param>
+        /// <returns></returns>
+        public async Task<List<ItemModel>> IndexAsync(bool forceRefresh = false)
+        {
+            return await Database.Table<ItemModel>().ToListAsync();
+        }
+
+        // Delete the Datbase Tables by dropping them
+        public async void DeleteTables()
+        {
+            await Database.DropTableAsync<ItemModel>();
+        }
+
+        // Create the Datbase Tables
+        public async void CreateTables()
+        {
+            await Database.CreateTableAsync<ItemModel>();
+        }
+
+
       
     }
 }
